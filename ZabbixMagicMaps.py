@@ -1,3 +1,6 @@
+#!/usr/bin/env python3.6
+
+import sys
 from pyzabbix import ZabbixAPI, ZabbixAPIException
 from ZabbixUtils import *
 import csv
@@ -5,17 +8,19 @@ import os
 import datetime
 import calendar
 
-zabbixuser = 'user'
-zabbixpassword= 'password'
-
-trigger1 = 'High ICMP ping response time'
-trigger2 = 'High ICMP ping loss'
-trigger3 = 'Unavailable by ICMP ping'
+trigger1 = 'Agent online'
+trigger2 = 'Please restart me!'
+trigger3 = 'Memory.dmp found! BSOD detected!'
 trigger1color = 'FF6F00'
 trigger2color = 'FF6F00'
 trigger3color = 'DD0000'
 
-zapi = ZabbixAPI("https://zabbix.etexgroup.com", user=zabbixuser, password=zabbixpassword)
+sys.path.insert(0,'/var/lib/zabbix')
+import config
+ZABBIX_SERVER = config.url
+zapi = ZabbixAPI(ZABBIX_SERVER)
+zapi.login(config.username, config.password)
+
 print('Enter the hostgroup for which you want to make a map, format, exact syntax needed')
 my_hostgroup = input('')
 
